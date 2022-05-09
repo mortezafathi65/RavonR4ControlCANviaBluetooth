@@ -21,7 +21,7 @@ import java.util.List;
 public class ScanningBluetooth extends AppCompatActivity {
 
     BluetoothLeScanner scanner;
-    BluetoothAdapter bluetoothAdapter;
+    BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     BluetoothDevice device;
     List<ScanFilter> filters = null;
     ListView listView;
@@ -78,7 +78,7 @@ public class ScanningBluetooth extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scanningbluetooth);
-        setTitle("Сканую наявні пристрої Bluetooth");
+        setTitle("Scanning Bluetooth device");
         listView = findViewById(R.id.scanBTList);
         scanBTListTextView = findViewById(R.id.scanBTTextView0);
 
@@ -87,7 +87,6 @@ public class ScanningBluetooth extends AppCompatActivity {
             listView.setAdapter(adapter);
         }
 
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         scanner = bluetoothAdapter.getBluetoothLeScanner();
 
         ScanSettings scanSettings = new ScanSettings.Builder()
@@ -112,7 +111,7 @@ public class ScanningBluetooth extends AppCompatActivity {
 
                 FileOutputStream fos = null;
                 try {
-                    fos = openFileOutput("setting.cfg", MODE_PRIVATE);
+                    fos = openFileOutput("device.cfg", MODE_PRIVATE);
                     fos.write(data.getBytes());
                 }
                 catch(IOException ex) {
