@@ -75,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+
+        if (id == R.id.action_connect) {
+           // item.setTitle("Disconnect");
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
