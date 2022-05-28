@@ -21,6 +21,10 @@ public class Setting {
 
     public Setting(Context activity) {
         this.activity = activity;
+        if (!readConfig()) {
+            writeConfig(defaultSetting);
+        }
+
     }
 
 

@@ -6,9 +6,15 @@
     <item android:id="@+id/action_car"
           android:title="Select Car"
           android:orderInCategory="100"
-          app:showAsAction="never"/>
+          app:showAsAction="never"
+        />
+
     <item android:id="@+id/action_scanbt"
           android:title="Select Bluetooth"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_connect"
+          android:title="Connect"
           android:orderInCategory="100"
           app:showAsAction="never"/>
 </menu>

@@ -29,7 +29,6 @@ public class ScanningBluetooth extends AppCompatActivity {
     ArrayList<String> listViewBTlist = new ArrayList<>();
     ArrayList<String> macAddressList = new ArrayList<>();
     ArrayAdapter<String> adapter;
-    TextView scanBTListTextView;
 
     private final ScanCallback scanCallback = new ScanCallback() {
 
@@ -80,7 +79,6 @@ public class ScanningBluetooth extends AppCompatActivity {
         setContentView(R.layout.scanningbluetooth);
         setTitle("Scanning Bluetooth device");
         listView = findViewById(R.id.scanBTList);
-        scanBTListTextView = findViewById(R.id.scanBTTextView0);
 
         if (listViewBTlist != null) {
             adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listViewBTlist);
@@ -96,8 +94,6 @@ public class ScanningBluetooth extends AppCompatActivity {
                 .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
                 .setReportDelay(0L)
                 .build();
-
-
         if (scanner != null) {
             scanner.startScan(filters, scanSettings, scanCallback);
         } else { }
@@ -106,29 +102,8 @@ public class ScanningBluetooth extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 String data = macAddressList.get(position);
-                scanBTListTextView.setText(data);
-
-
-                FileOutputStream fos = null;
-                try {
-                    fos = openFileOutput("device.cfg", MODE_PRIVATE);
-                    fos.write(data.getBytes());
-                }
-                catch(IOException ex) {
-                    ex.getMessage();
-                }
-                finally{
-                    try{
-                        if(fos!=null)
-                            fos.close();
-                    }
-                    catch(IOException ex){
-                        ex.getMessage();
-                    }
-                }
-                Intent intent = new Intent(MainActivity.BROADCAST_ACTION);
-                intent.putExtra(MainActivity.PARAM_MSG, "reconnect");
-                sendBroadcast(intent);
+                Setting setting = new Setting(ScanningBluetooth.this);
+                setting.setSetting("device", data);
                 onPause();
             }
         });

@@ -5,12 +5,17 @@ import android.os.Build;
 import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     boolean bound = false;
     private ServiceConnection connectionService;
     private Intent intent;
+    public Setting setting;
+    public Car car;
+    ListView listViewCarFunc;
+    ArrayAdapter<String> adapter;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -33,11 +42,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+         setting = new Setting(this);
+         car = new Car(setting.getSetting("car"));
+         listViewCarFunc = findViewById(R.id.listViewCarFunc);
+        ArrayList<String> arrayListCarFunc = car.getListCarFunc();
+
+
+        if (arrayListCarFunc != null) {
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayListCarFunc);
+            listViewCarFunc.setAdapter(adapter);
+        }
 
         new BluetoothPermits(this).verificationOfPermits();
         new GeolocationPermits(this).verificationOfPermits();
 
         startService();
+
+        listViewCarFunc.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
+                System.out.println(arrayListCarFunc.get(position));
+            }
+        });
 
     }
 
@@ -73,6 +99,11 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_scanbt) {
             Intent intent = new Intent(MainActivity.this, ScanningBluetooth.class);
             startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_connect) {
+           // item.setTitle("Disconnect");
             return true;
         }
         return super.onOptionsItemSelected(item);
