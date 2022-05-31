@@ -77,7 +77,7 @@ public class ScanningBluetooth extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scanningbluetooth);
-        setTitle("Scanning Bluetooth device");
+        setTitle("Select device");
         listView = findViewById(R.id.scanBTList);
 
         if (listViewBTlist != null) {
